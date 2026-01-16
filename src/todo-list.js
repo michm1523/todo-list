@@ -1,0 +1,2 @@
+let todos = [];
+let displayTodos = [];

@@ -1,0 +1,222 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: white;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: black;
+}
+
+.side-bar {
+  background-color: rgb(63, 93, 245);
+  flex-basis: 20%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 64px 32px;
+  gap: 36px;
+}
+
+.side-bar button {
+  color: inherit;
+}
+
+.home-btn {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.label-box {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.projects ul {
+  list-style: none;
+}
+
+.important-btn {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.projects {
+  height: 400px;
+}
+
+.add-project {
+  display: flex;
+  align-items: center;
+}
+
+.add-project ion-icon {
+  font-size: 24px;
+}
+
+.main {
+  flex-grow: 1;
+  padding: 64px 64px;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+}
+
+.tabs {
+  display: flex;
+  gap: 24px;
+}
+
+.add-todo {
+  background-color: white;
+  height: 48px;
+  width: 48px;
+  border-radius: 50px;
+  display: block;
+}
+
+.add-todo.hidden {
+  display: none;
+}
+
+.add-todo ion-icon {
+  font-size: 32px;
+}
+
+.todos {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-top: 64px;
+}
+
+.todo {
+  background-color: white;
+  width: 80%;
+  color: black;
+  border-radius: 16px;
+  padding: 12px 12px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.todo button {
+  display: flex;
+  align-items: center;
+}
+
+.todo ion-icon {
+  font-size: 24px;
+}
+
+.todo input,
+.todo-name {
+  cursor: pointer;
+}
+
+.todo-name {
+  flex-grow: 1;
+}
+
+.right-sidebar {
+  background-color: white;
+  color: black;
+  display: none;
+  padding: 64px 32px;
+  width: 25%;
+}
+
+.right-sidebar.open {
+  display: block;
+}
+
+.form-title-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 32px;
+}
+
+.form-title-box ion-icon {
+  font-size: 32px;
+  color: black;
+}
+
+.form-title-box button {
+  height: 47px;
+  width: 47px;
+  border: 2px solid black;
+  border-radius: 50px;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+}
+
+.add-form {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.add-form input[type="text"] {
+  width: 100%;
+}
+
+.add-form p {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-form .form-check {
+  display: flex;
+  flex-direction: row;
+}
+
+input,
+textarea,
+select {
+  padding: 8px 8px;
+  font-size: inherit;
+  font-family: inherit;
+  display: block;
+}
+
+input[type="checkbox"] {
+  display: inline;
+}
+
+.form-submit {
+  margin-top: 24px;
+  background-color: rgb(63, 93, 245);
+  color: white;
+  padding: 16px 8px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
