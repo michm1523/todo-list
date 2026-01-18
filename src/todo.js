@@ -1,14 +1,12 @@
 export default class Todo {
-  #id;
-
-  constructor(todoName, todoText, deadline, project, important) {
-    this.todoName = todoName;
-    this.todoText = todoText;
+  constructor(name, text, deadline, project, important) {
+    this.name = name;
+    this.text = text;
     this.deadline = deadline;
     this.project = project;
     this.important = important;
 
-    this.#id = crypto.randomUUID();
+    this.id = crypto.randomUUID();
     this.completed = false;
   }
 }
