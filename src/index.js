@@ -1,7 +1,12 @@
 import "./styles.css";
 import Todo from "./todo.js";
-import { addTodo, getDisplayTodos } from "./todo-list.js";
-import { renderTodos } from "./display.js";
+import {
+  addTodo,
+  getDisplayTodos,
+  addProject,
+  getProjects,
+} from "./todo-list.js";
+import { renderTodos, renderProjects } from "./display.js";
 
 // Form open and close
 const addTodoBtn = document.querySelector(".add-todo");
@@ -52,3 +57,33 @@ addTodoForm.addEventListener("submit", (e) => {
 
   closeSideBar();
 });
+
+// Add project form
+const addProjectBtn = document.querySelector(".add-project");
+const addProjectForm = document.querySelector(".add-project-form");
+const addProjectDialog = document.querySelector("dialog");
+const closeProjectFormBtn = document.querySelector(".project-form-close");
+const projectInput = document.querySelector("#project-name");
+
+const closeProjectDialog = () => {
+  addProjectDialog.close();
+  projectInput.value = "";
+};
+
+addProjectBtn.addEventListener("click", (e) => {
+  addProjectDialog.showModal();
+});
+
+closeProjectFormBtn.addEventListener("click", closeProjectDialog);
+
+addProjectForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  addProject(projectInput.value);
+
+  renderProjects(getProjects());
+
+  closeProjectDialog();
+});
+
+renderTodos();
+renderProjects();

@@ -228,3 +228,56 @@ input[type="checkbox"] {
   font-size: 18px;
   font-weight: 500;
 }
+
+dialog {
+  margin: auto;
+  position: relative;
+  border-radius: 24px;
+}
+
+.add-project-form {
+  width: 500px;
+  height: 200px;
+  padding: 32px;
+}
+
+#project-name {
+  height: 100px;
+  width: 100%;
+  font-size: 32px;
+  border: none;
+}
+
+#project-name:focus {
+  outline: none;
+}
+
+.project-form-submit {
+  background-color: rgb(63, 93, 245);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  position: absolute;
+  right: 32px;
+  transition: all 0.3s;
+}
+
+.project-form-submit:hover {
+  background-color: rgb(24, 54, 203);
+}
+
+.project-form-close {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+}
+
+.project-form-close ion-icon {
+  font-size: 24px;
+  color: rgb(79, 79, 79);
+}
+
+dialog::backdrop {
+  background-color: black;
+  opacity: 0.5;
+}

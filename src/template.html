@@ -22,7 +22,7 @@
               <ion-icon name="add-outline"></ion-icon>
             </button>
           </div>
-          <ul>
+          <ul class="project-list">
             <li>
               <button class="project-btn" type="button">Default</button>
             </li>
@@ -80,7 +80,7 @@
           <p>
             <label for="project-select">Project</label>
             <select name="project-select" id="project-select">
-              <option value="default" selected>Default</option>
+              <option value="Default" selected>Default</option>
               <option value="idk">I don't know</option>
             </select>
           </p>
@@ -92,6 +92,22 @@
         </form>
       </div>
     </div>
+
+    <dialog>
+      <form action="#" method="post" class="add-project-form">
+        <input
+          type="text"
+          placeholder="project name"
+          id="project-name"
+          name="project-name"
+          required
+        />
+        <button class="project-form-submit" type="submit">Done</button>
+      </form>
+      <button class="project-form-close" type="button">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </dialog>
 
     <script
       type="module"

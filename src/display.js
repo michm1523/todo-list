@@ -1,4 +1,5 @@
 const todoList = document.querySelector(".todos");
+const projectList = document.querySelector(".project-list");
 
 const renderTodos = (todos) => {
   // Clear list
@@ -61,4 +62,20 @@ const renderTodos = (todos) => {
   });
 };
 
-export { renderTodos };
+const renderProjects = (projects) => {
+  while (projectList.firstChild) {
+    projectList.removeChild(projectList.firstChild);
+  }
+
+  projects.forEach((project) => {
+    const projectElement = document.createElement("li");
+    const projectButton = document.createElement("button");
+    projectButton.setAttribute("type", "button");
+    projectButton.classList.add("project-btn");
+    projectButton.textContent = project;
+    projectElement.appendChild(projectButton);
+    projectList.appendChild(projectElement);
+  });
+};
+
+export { renderTodos, renderProjects };
