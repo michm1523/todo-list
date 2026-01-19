@@ -6,6 +6,10 @@ const addTodo = (todo) => {
   todos.push(todo);
 };
 
+const delTodo = (id) => {
+  todos = todos.filter((todo) => todo.id != id);
+};
+
 const getDisplayTodos = () => {
   return todos;
 };
@@ -18,4 +22,4 @@ const getProjects = () => {
   return projects;
 };
 
-export { addTodo, getDisplayTodos, addProject, getProjects };
+export { addTodo, delTodo, getDisplayTodos, addProject, getProjects };

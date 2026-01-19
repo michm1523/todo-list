@@ -11,6 +11,7 @@ const renderTodos = (todos) => {
   todos.forEach((todo) => {
     let todoElement = document.createElement("li");
     todoElement.classList.add("todo");
+    todoElement.setAttribute("data-id", todo.id);
 
     let check = document.createElement("input");
     check.setAttribute("type", "checkbox");
@@ -42,14 +43,6 @@ const renderTodos = (todos) => {
       todoElement.appendChild(importantTag);
     }
 
-    // let editBtn = document.createElement("button");
-    // editBtn.setAttribute("type", "button");
-    // editBtn.classList.add("edit-todo");
-    // let editIcon = document.createElement("ion-icon");
-    // editIcon.setAttribute("name", "create-outline");
-    // editBtn.appendChild(editIcon);
-    // todoElement.appendChild(editBtn);
-
     let deleteBtn = document.createElement("button");
     deleteBtn.setAttribute("type", "button");
     deleteBtn.classList.add("del-todo");
@@ -78,4 +71,55 @@ const renderProjects = (projects) => {
   });
 };
 
-export { renderTodos, renderProjects };
+// Form submission
+const addTodoForm = document.querySelector(".add-form");
+const todoNameInput = document.querySelector("#todo-name");
+const todoTextInput = document.querySelector("#todo-text");
+const todoDeadlineInput = document.querySelector("#deadline");
+const projectSelectInput = document.querySelector("#project-select");
+const importantInput = document.querySelector("#important-check");
+
+const addTodoBtn = document.querySelector(".add-todo");
+const rightSideBar = document.querySelector(".right-sidebar");
+const formCancelBtn = document.querySelector(".form-cancel");
+
+const openSideBar = (projects) => {
+  rightSideBar.classList.add("open");
+  addTodoBtn.classList.add("hidden");
+  updateProjectOptions(projects);
+};
+
+const updateProjectOptions = (projects) => {
+  while (projectSelectInput.firstChild) {
+    projectSelectInput.removeChild(projectSelectInput.firstChild);
+  }
+  projects.forEach((project) => {
+    const projectOption = document.createElement("option");
+
+    if (project === "Default") {
+      projectOption.setAttribute("default", "");
+    }
+
+    projectOption.setAttribute("value", project);
+    projectOption.textContent = project;
+    projectSelectInput.appendChild(projectOption);
+  });
+};
+
+const closeSideBar = () => {
+  todoNameInput.value = "";
+  todoTextInput.value = "";
+  projectSelectInput.value = "";
+  todoDeadlineInput.value = "";
+  importantInput.checked = false;
+  rightSideBar.classList.remove("open");
+  addTodoBtn.classList.remove("hidden");
+};
+
+export {
+  renderTodos,
+  renderProjects,
+  openSideBar,
+  closeSideBar,
+  updateProjectOptions,
+};

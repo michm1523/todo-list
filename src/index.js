@@ -2,33 +2,24 @@ import "./styles.css";
 import Todo from "./todo.js";
 import {
   addTodo,
+  delTodo,
   getDisplayTodos,
   addProject,
   getProjects,
 } from "./todo-list.js";
-import { renderTodos, renderProjects } from "./display.js";
+import {
+  renderTodos,
+  renderProjects,
+  openSideBar,
+  closeSideBar,
+  updateProjectOptions,
+} from "./display.js";
 
 // Form open and close
 const addTodoBtn = document.querySelector(".add-todo");
-const rightSideBar = document.querySelector(".right-sidebar");
 const formCancelBtn = document.querySelector(".form-cancel");
 
-const openSideBar = () => {
-  rightSideBar.classList.add("open");
-  addTodoBtn.classList.add("hidden");
-};
-
-const closeSideBar = () => {
-  todoNameInput.value = "";
-  todoTextInput.value = "";
-  projectSelectInput.value = "";
-  todoDeadlineInput.value = "";
-  importantInput.checked = false;
-  rightSideBar.classList.remove("open");
-  addTodoBtn.classList.remove("hidden");
-};
-
-addTodoBtn.addEventListener("click", openSideBar);
+addTodoBtn.addEventListener("click", () => openSideBar(getProjects()));
 
 formCancelBtn.addEventListener("click", closeSideBar);
 
@@ -81,9 +72,20 @@ addProjectForm.addEventListener("submit", (e) => {
   addProject(projectInput.value);
 
   renderProjects(getProjects());
+  updateProjectOptions(getProjects());
 
   closeProjectDialog();
 });
 
-renderTodos();
-renderProjects();
+// Remove todos
+const todoList = document.querySelector(".todos");
+
+todoList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("del-todo")) {
+    delTodo(e.target.parentElement.getAttribute("data-id"));
+    renderTodos(getDisplayTodos());
+  }
+});
+
+renderTodos(getDisplayTodos());
+renderProjects(getProjects());
