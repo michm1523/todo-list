@@ -6,6 +6,8 @@ import {
   getDisplayTodos,
   addProject,
   getProjects,
+  resetFilters,
+  filterByProject,
 } from "./todo-list.js";
 import {
   renderTodos,
@@ -83,6 +85,23 @@ const todoList = document.querySelector(".todos");
 todoList.addEventListener("click", (e) => {
   if (e.target.classList.contains("del-todo")) {
     delTodo(e.target.parentElement.getAttribute("data-id"));
+    renderTodos(getDisplayTodos());
+  }
+});
+
+// View todos for specific projects
+const homeBtn = document.querySelector(".home-btn");
+const projectList = document.querySelector(".project-list");
+
+homeBtn.addEventListener("click", (e) => {
+  resetFilters();
+  renderTodos(getDisplayTodos());
+});
+
+projectList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("project-btn")) {
+    resetFilters();
+    filterByProject(e.target.textContent);
     renderTodos(getDisplayTodos());
   }
 });
