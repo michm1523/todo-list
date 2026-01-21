@@ -8,6 +8,7 @@ import {
   getProjects,
   resetFilters,
   filterByProject,
+  filterByTime,
 } from "./todo-list.js";
 import {
   renderTodos,
@@ -92,6 +93,7 @@ todoList.addEventListener("click", (e) => {
 // View todos for specific projects
 const homeBtn = document.querySelector(".home-btn");
 const projectList = document.querySelector(".project-list");
+const timeTabs = document.querySelector(".tabs");
 
 homeBtn.addEventListener("click", (e) => {
   resetFilters();
@@ -102,6 +104,13 @@ projectList.addEventListener("click", (e) => {
   if (e.target.classList.contains("project-btn")) {
     resetFilters();
     filterByProject(e.target.textContent);
+    renderTodos(getDisplayTodos());
+  }
+});
+
+timeTabs.addEventListener("click", (e) => {
+  if (e.target.classList.contains("tab")) {
+    filterByTime(e.target.textContent);
     renderTodos(getDisplayTodos());
   }
 });

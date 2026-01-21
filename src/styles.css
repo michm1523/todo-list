@@ -76,6 +76,10 @@ button {
   padding: 64px 64px;
 }
 
+.tab {
+  cursor: pointer;
+}
+
 .options {
   display: flex;
   justify-content: space-between;
