@@ -1,15 +1,6 @@
 import "./styles.css";
 import Todo from "./todo.js";
-import {
-  addTodo,
-  delTodo,
-  getDisplayTodos,
-  addProject,
-  getProjects,
-  resetFilters,
-  filterByProject,
-  filterByTime,
-} from "./todo-list.js";
+import { TodoList } from "./todo-list.js";
 import {
   renderTodos,
   renderProjects,
@@ -18,11 +9,14 @@ import {
   updateProjectOptions,
 } from "./display.js";
 
+// Create Todo List
+const todoList = new TodoList();
+
 // Form open and close
 const addTodoBtn = document.querySelector(".add-todo");
 const formCancelBtn = document.querySelector(".form-cancel");
 
-addTodoBtn.addEventListener("click", () => openSideBar(getProjects()));
+addTodoBtn.addEventListener("click", () => openSideBar(todoList.getProjects()));
 
 formCancelBtn.addEventListener("click", closeSideBar);
 
@@ -37,7 +31,7 @@ const importantInput = document.querySelector("#important-check");
 addTodoForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  addTodo(
+  todoList.addTodo(
     new Todo(
       todoNameInput.value,
       todoTextInput.value,
@@ -47,7 +41,7 @@ addTodoForm.addEventListener("submit", (e) => {
     ),
   );
 
-  renderTodos(getDisplayTodos());
+  renderTodos(todoList.getDisplayTodos());
 
   closeSideBar();
 });
@@ -72,48 +66,52 @@ closeProjectFormBtn.addEventListener("click", closeProjectDialog);
 
 addProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  addProject(projectInput.value);
+  todoList.addProject(projectInput.value);
 
-  renderProjects(getProjects());
-  updateProjectOptions(getProjects());
+  renderProjects(todoList.getProjects());
+  updateProjectOptions(todoList.getProjects());
 
   closeProjectDialog();
 });
 
-// Remove todos
-const todoList = document.querySelector(".todos");
+// Todo actions
+const todoListElement = document.querySelector(".todos");
 
-todoList.addEventListener("click", (e) => {
+todoListElement.addEventListener("click", (e) => {
   if (e.target.classList.contains("del-todo")) {
-    delTodo(e.target.parentElement.getAttribute("data-id"));
-    renderTodos(getDisplayTodos());
+    todoList.delTodo(e.target.parentElement.getAttribute("data-id"));
+    renderTodos(todoList.getDisplayTodos());
+  }
+
+  if (e.target.classList.contains("todo-check")) {
+    todoList.toggleTodoComplete(e.target.parentElement.getAttribute("data-id"));
   }
 });
 
-// View todos for specific projects
+// Todo filters and sorting
 const homeBtn = document.querySelector(".home-btn");
 const projectList = document.querySelector(".project-list");
 const timeTabs = document.querySelector(".tabs");
 
 homeBtn.addEventListener("click", (e) => {
-  resetFilters();
-  renderTodos(getDisplayTodos());
+  todoList.resetFilters();
+  renderTodos(todoList.getDisplayTodos());
 });
 
 projectList.addEventListener("click", (e) => {
   if (e.target.classList.contains("project-btn")) {
-    resetFilters();
-    filterByProject(e.target.textContent);
-    renderTodos(getDisplayTodos());
+    todoList.resetFilters();
+    todoList.filterByProject(e.target.textContent);
+    renderTodos(todoList.getDisplayTodos());
   }
 });
 
 timeTabs.addEventListener("click", (e) => {
   if (e.target.classList.contains("tab")) {
-    filterByTime(e.target.textContent);
-    renderTodos(getDisplayTodos());
+    todoList.filterByTime(e.target.textContent);
+    renderTodos(todoList.getDisplayTodos());
   }
 });
 
-renderTodos(getDisplayTodos());
-renderProjects(getProjects());
+renderTodos(todoList.getDisplayTodos());
+renderProjects(todoList.getProjects());

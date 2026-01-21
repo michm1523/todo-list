@@ -1,72 +1,74 @@
 import { differenceInDays } from "date-fns";
 
-let todos = [];
-let projects = ["Default"];
-let projectFilter = null;
-let timeFilter = "all time";
-
-const addTodo = (todo) => {
-  todos.push(todo);
-};
-
-const delTodo = (id) => {
-  todos = todos.filter((todo) => todo.id != id);
-};
-
-const getTodos = () => {
-  return todos;
-};
-
-const getDisplayTodos = () => {
-  let displayTodos = todos;
-  if (projectFilter != null) {
-    displayTodos = displayTodos.filter((todo) => todo.project == projectFilter);
+class TodoList {
+  constructor() {
+    this.todos = [];
+    this.projects = ["Default"];
+    this.projectFilter = null;
+    this.timeFilter = "all time";
   }
 
-  const date = new Date();
-  const today = new Date(date.toISOString().slice(0, 10));
-  if (timeFilter == "today") {
-    displayTodos = displayTodos.filter(
-      (todo) => todo.deadline == date.toISOString().slice(0, 10),
-    );
-  } else if (timeFilter == "next 7 days") {
-    displayTodos.filter((todo) => {
-      const todoDeadlineDate = new Date(todo.deadline);
-      return differenceInDays(todoDeadlineDate, today) <= 7;
-    });
-  }
+  addTodo = (todo) => {
+    this.todos.push(todo);
+  };
 
-  return displayTodos;
-};
+  delTodo = (id) => {
+    this.todos = this.todos.filter((todo) => todo.id != id);
+  };
 
-const resetFilters = () => {
-  projectFilter = null;
-  timeFilter = "all time";
-};
+  toggleTodoComplete = (id) => {
+    for (const todo of this.todos) {
+      if (todo.id == id) {
+        todo.completed = !todo.completed;
+        return;
+      }
+    }
+  };
 
-const filterByProject = (project) => {
-  projectFilter = project;
-};
+  getDisplayTodos = () => {
+    let displayTodos = this.todos;
+    if (this.projectFilter != null) {
+      displayTodos = displayTodos.filter(
+        (todo) => todo.project == this.projectFilter,
+      );
+    }
 
-const filterByTime = (time) => {
-  timeFilter = time.toLowerCase();
-};
+    const date = new Date();
+    const today = new Date(date.toISOString().slice(0, 10));
+    if (this.timeFilter == "today") {
+      displayTodos = displayTodos.filter(
+        (todo) => todo.deadline == date.toISOString().slice(0, 10),
+      );
+    } else if (this.timeFilter == "next 7 days") {
+      displayTodos.filter((todo) => {
+        const todoDeadlineDate = new Date(todo.deadline);
+        return differenceInDays(todoDeadlineDate, today) <= 7;
+      });
+    }
 
-const addProject = (name) => {
-  projects.push(name);
-};
+    return displayTodos;
+  };
 
-const getProjects = () => {
-  return projects;
-};
+  resetFilters = () => {
+    this.projectFilter = null;
+    this.timeFilter = "all time";
+  };
 
-export {
-  addTodo,
-  delTodo,
-  getDisplayTodos,
-  addProject,
-  getProjects,
-  resetFilters,
-  filterByProject,
-  filterByTime,
-};
+  filterByProject = (project) => {
+    this.projectFilter = project;
+  };
+
+  filterByTime = (time) => {
+    this.timeFilter = time.toLowerCase();
+  };
+
+  addProject = (name) => {
+    this.projects.push(name);
+  };
+
+  getProjects = () => {
+    return this.projects;
+  };
+}
+
+export { TodoList };
