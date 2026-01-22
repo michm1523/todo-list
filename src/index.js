@@ -49,20 +49,19 @@ addTodoForm.addEventListener("submit", (e) => {
 // Add project form
 const addProjectBtn = document.querySelector(".add-project");
 const addProjectForm = document.querySelector(".add-project-form");
-const addProjectDialog = document.querySelector("dialog");
+const addProjectDialog = document.querySelector(".add-project-dialog");
 const closeProjectFormBtn = document.querySelector(".project-form-close");
 const projectInput = document.querySelector("#project-name");
 
-const closeProjectDialog = () => {
-  addProjectDialog.close();
+addProjectDialog.addEventListener("close", (e) => {
   projectInput.value = "";
-};
+});
 
 addProjectBtn.addEventListener("click", (e) => {
   addProjectDialog.showModal();
 });
 
-closeProjectFormBtn.addEventListener("click", closeProjectDialog);
+closeProjectFormBtn.addEventListener("click", () => addProjectDialog.close());
 
 addProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -71,7 +70,7 @@ addProjectForm.addEventListener("submit", (e) => {
   renderProjects(todoList.getProjects());
   updateProjectOptions(todoList.getProjects());
 
-  closeProjectDialog();
+  addProjectDialog.close();
 });
 
 // Todo actions
@@ -98,12 +97,40 @@ homeBtn.addEventListener("click", (e) => {
   renderTodos(todoList.getDisplayTodos());
 });
 
+// Project filter and delete project
+const deleteProjectDialog = document.querySelector(".delete-project-dialog");
+const deleteProjectClose = document.querySelector(".delete-project-close");
+const deleteProjectSubmit = document.querySelector(".delete-project-submit");
+const deleteProjectForm = document.querySelector(".delete-project-form");
+let pendingDelete = null;
+
 projectList.addEventListener("click", (e) => {
   if (e.target.classList.contains("project-btn")) {
     todoList.resetFilters();
     todoList.filterByProject(e.target.textContent);
     renderTodos(todoList.getDisplayTodos());
   }
+
+  if (e.target.classList.contains("delete-project-btn")) {
+    pendingDelete = e.target.parentElement.firstChild.textContent;
+    deleteProjectDialog.showModal();
+  }
+});
+
+deleteProjectForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (pendingDelete) todoList.delProject(pendingDelete);
+  renderProjects(todoList.getProjects());
+  renderTodos(todoList.getDisplayTodos());
+  deleteProjectDialog.close();
+});
+
+deleteProjectClose.addEventListener("click", (e) => {
+  deleteProjectDialog.close();
+});
+
+deleteProjectDialog.addEventListener("close", (e) => {
+  pendingDelete = null;
 });
 
 timeTabs.addEventListener("click", (e) => {

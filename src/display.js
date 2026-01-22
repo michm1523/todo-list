@@ -62,11 +62,26 @@ const renderProjects = (projects) => {
 
   projects.forEach((project) => {
     const projectElement = document.createElement("li");
-    const projectButton = document.createElement("button");
-    projectButton.setAttribute("type", "button");
-    projectButton.classList.add("project-btn");
-    projectButton.textContent = project;
-    projectElement.appendChild(projectButton);
+    projectElement.classList.add("project");
+
+    const projectBtn = document.createElement("button");
+    projectBtn.setAttribute("type", "button");
+    projectBtn.classList.add("project-btn");
+    projectBtn.textContent = project;
+    projectElement.appendChild(projectBtn);
+
+    if (project != "Default") {
+      const deleteBtn = document.createElement("button");
+      deleteBtn.setAttribute("type", "button");
+      deleteBtn.classList.add("delete-project-btn");
+
+      const deleteIcon = document.createElement("ion-icon");
+      deleteIcon.setAttribute("name", "trash-outline");
+      deleteBtn.appendChild(deleteIcon);
+
+      projectElement.appendChild(deleteBtn);
+    }
+
     projectList.appendChild(projectElement);
   });
 };

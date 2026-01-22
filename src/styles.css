@@ -17,6 +17,10 @@ button {
   font-size: inherit;
 }
 
+ion-icon {
+  pointer-events: none;
+}
+
 .container {
   display: flex;
   height: 100vh;
@@ -69,6 +73,22 @@ button {
 
 .add-project ion-icon {
   font-size: 24px;
+}
+
+.project {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  gap: 16px;
+}
+
+.delete-project-btn {
+  display: none;
+}
+
+.project:hover .delete-project-btn {
+  display: flex;
+  align-items: center;
 }
 
 .main {
@@ -134,7 +154,6 @@ button {
 
 .todo ion-icon {
   font-size: 24px;
-  pointer-events: none;
 }
 
 .todo input,
@@ -240,7 +259,8 @@ dialog {
   border-radius: 24px;
 }
 
-.add-project-form {
+.add-project-form,
+.delete-project-form {
   width: 500px;
   height: 200px;
   padding: 32px;
@@ -257,7 +277,8 @@ dialog {
   outline: none;
 }
 
-.project-form-submit {
+.project-form-submit,
+.delete-project-submit {
   background-color: rgb(63, 93, 245);
   color: white;
   padding: 12px 24px;
@@ -267,19 +288,27 @@ dialog {
   transition: all 0.3s;
 }
 
-.project-form-submit:hover {
+.project-form-submit:hover,
+.delete-project-submit:hover {
   background-color: rgb(24, 54, 203);
 }
 
-.project-form-close {
+.project-form-close,
+.delete-project-close {
   position: absolute;
   top: 32px;
   right: 32px;
 }
 
-.project-form-close ion-icon {
+.project-form-close ion-icon,
+.delete-project-close ion-icon {
   font-size: 24px;
   color: rgb(79, 79, 79);
+}
+
+.delete-project-form p {
+  font-size: 28px;
+  padding-right: 64px;
 }
 
 dialog::backdrop {

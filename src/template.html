@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <dialog>
+    <dialog class="add-project-dialog">
       <form action="#" method="post" class="add-project-form">
         <input
           type="text"
@@ -106,6 +106,16 @@
       <button class="project-form-close" type="button">
         <ion-icon name="close-outline"></ion-icon>
       </button>
+    </dialog>
+
+    <dialog class="delete-project-dialog">
+      <form action="#" method="post" class="delete-project-form">
+        <p>Deleting a project will also delete all todos associated with it.</p>
+        <button type="submit" class="delete-project-submit">Confirm</button>
+        <button class="delete-project-close" type="button">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+      </form>
     </dialog>
 
     <script

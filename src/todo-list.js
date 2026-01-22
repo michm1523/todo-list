@@ -37,12 +37,13 @@ class TodoList {
     const today = new Date(date.toISOString().slice(0, 10));
     if (this.timeFilter == "today") {
       displayTodos = displayTodos.filter(
-        (todo) => todo.deadline == date.toISOString().slice(0, 10),
+        (todo) =>
+          todo.deadline == date.toISOString().slice(0, 10) && todo.deadline,
       );
     } else if (this.timeFilter == "next 7 days") {
-      displayTodos.filter((todo) => {
+      displayTodos = displayTodos.filter((todo) => {
         const todoDeadlineDate = new Date(todo.deadline);
-        return differenceInDays(todoDeadlineDate, today) <= 7;
+        return differenceInDays(todoDeadlineDate, today) <= 7 && todo.deadline;
       });
     }
 
@@ -64,6 +65,11 @@ class TodoList {
 
   addProject = (name) => {
     this.projects.push(name);
+  };
+
+  delProject = (name) => {
+    this.projects = this.projects.filter((project) => project != name);
+    this.todos = this.todos.filter((todo) => todo.project != name);
   };
 
   getProjects = () => {
