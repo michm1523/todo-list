@@ -8,6 +8,7 @@ import {
   closeSideBar,
   updateProjectOptions,
   toggleSideBar,
+  getSideBarOpen,
 } from "./display.js";
 
 // Create Todo List
@@ -56,7 +57,7 @@ addTodoForm.addEventListener("submit", (e) => {
     todoList.editTodo(currTodoId, formData);
   }
 
-  renderTodos(todoList.getDisplayTodos());
+  showTodos();
 
   currTodoId = null;
   closeSideBar();
@@ -95,7 +96,7 @@ const todoListElement = document.querySelector(".todos");
 todoListElement.addEventListener("click", (e) => {
   if (e.target.classList.contains("del-todo")) {
     todoList.delTodo(e.target.parentElement.getAttribute("data-id"));
-    renderTodos(todoList.getDisplayTodos());
+    showTodos();
   }
 
   if (e.target.classList.contains("todo-check")) {
@@ -103,14 +104,14 @@ todoListElement.addEventListener("click", (e) => {
   }
 
   if (e.target.classList.contains("todo-name")) {
-    toggleSideBar(
-      todoList.getProjects(),
-      todoList.getTodoById(e.target.parentElement.getAttribute("data-id")),
-    );
-    if (currTodoId) {
+    const todoId = e.target.parentElement.getAttribute("data-id");
+    if (getSideBarOpen() && currTodoId == todoId) {
       currTodoId = null;
+      closeSideBar();
     } else {
-      currTodoId = e.target.parentElement.getAttribute("data-id");
+      currTodoId = todoId;
+      closeSideBar();
+      openSideBar(todoList.getProjects(), todoList.getTodoById(todoId));
     }
   }
 });
@@ -122,7 +123,7 @@ const timeTabs = document.querySelector(".tabs");
 
 homeBtn.addEventListener("click", (e) => {
   todoList.resetFilters();
-  renderTodos(todoList.getDisplayTodos());
+  showTodos();
 });
 
 // Project filter and delete project
@@ -136,7 +137,7 @@ projectList.addEventListener("click", (e) => {
   if (e.target.classList.contains("project-btn")) {
     todoList.resetFilters();
     todoList.filterByProject(e.target.textContent);
-    renderTodos(todoList.getDisplayTodos());
+    showTodos();
   }
 
   if (e.target.classList.contains("delete-project-btn")) {
@@ -147,9 +148,11 @@ projectList.addEventListener("click", (e) => {
 
 deleteProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (pendingDelete) todoList.delProject(pendingDelete);
+  if (pendingDelete) {
+    todoList.delProject(pendingDelete);
+  }
   renderProjects(todoList.getProjects());
-  renderTodos(todoList.getDisplayTodos());
+  showTodos();
   deleteProjectDialog.close();
 });
 
@@ -164,9 +167,25 @@ deleteProjectDialog.addEventListener("close", (e) => {
 timeTabs.addEventListener("click", (e) => {
   if (e.target.classList.contains("tab")) {
     todoList.filterByTime(e.target.textContent);
-    renderTodos(todoList.getDisplayTodos());
+    showTodos();
   }
 });
 
-renderTodos(todoList.getDisplayTodos());
+// Show todos
+const showTodos = () => {
+  renderTodos(todoList.getDisplayTodos());
+  if (currTodoId) {
+    if (
+      !todoList
+        .getDisplayTodos()
+        .map((todo) => todo.id)
+        .includes(currTodoId)
+    ) {
+      currTodoId = null;
+      closeSideBar();
+    }
+  }
+};
+
+showTodos();
 renderProjects(todoList.getProjects());

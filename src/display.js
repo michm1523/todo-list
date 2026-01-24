@@ -157,6 +157,10 @@ const closeSideBar = () => {
   sideBarOpen = false;
 };
 
+const getSideBarOpen = () => {
+  return sideBarOpen;
+};
+
 export {
   renderTodos,
   renderProjects,
@@ -164,4 +168,5 @@ export {
   closeSideBar,
   updateProjectOptions,
   toggleSideBar,
+  getSideBarOpen,
 };
