@@ -25,6 +25,14 @@ class TodoList {
     }
   };
 
+  editTodo = (id, details) => {
+    for (const todo of this.todos) {
+      if (todo.id == id) {
+        todo.update(details);
+      }
+    }
+  };
+
   getDisplayTodos = () => {
     let displayTodos = this.todos;
     if (this.projectFilter != null) {
@@ -48,6 +56,16 @@ class TodoList {
     }
 
     return displayTodos;
+  };
+
+  getTodoById = (id) => {
+    for (let todo of this.todos) {
+      if (todo.id == id) {
+        return todo;
+      }
+    }
+
+    return null;
   };
 
   resetFilters = () => {

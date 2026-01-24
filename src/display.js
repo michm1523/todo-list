@@ -86,21 +86,46 @@ const renderProjects = (projects) => {
   });
 };
 
-// Form submission
-const addTodoForm = document.querySelector(".add-form");
+// Add todo form display
 const todoNameInput = document.querySelector("#todo-name");
 const todoTextInput = document.querySelector("#todo-text");
 const todoDeadlineInput = document.querySelector("#deadline");
 const projectSelectInput = document.querySelector("#project-select");
 const importantInput = document.querySelector("#important-check");
+const formTitle = document.querySelector(".form-title");
+const projectLabel = document.querySelector(".project-label");
 
 const addTodoBtn = document.querySelector(".add-todo");
 const rightSideBar = document.querySelector(".right-sidebar");
-const formCancelBtn = document.querySelector(".form-cancel");
 
-const openSideBar = (projects) => {
+let sideBarOpen = false;
+
+const toggleSideBar = (projects, todo) => {
+  if (sideBarOpen) {
+    closeSideBar();
+  } else {
+    openSideBar(projects, todo);
+  }
+};
+
+const openSideBar = (projects, todo) => {
   rightSideBar.classList.add("open");
   addTodoBtn.classList.add("hidden");
+  if (todo) {
+    projectSelectInput.style.display = "none";
+    projectLabel.style.display = "none";
+
+    todoNameInput.value = todo.name;
+    todoTextInput.value = todo.text;
+    todoDeadlineInput.value = todo.deadline;
+    importantInput.checked = todo.important;
+    formTitle.textContent = "Edit Todo";
+  } else {
+    projectSelectInput.style.display = "block";
+    projectLabel.style.display = "none";
+    formTitle.textContent = "New Todo";
+  }
+  sideBarOpen = true;
   updateProjectOptions(projects);
 };
 
@@ -129,6 +154,7 @@ const closeSideBar = () => {
   importantInput.checked = false;
   rightSideBar.classList.remove("open");
   addTodoBtn.classList.remove("hidden");
+  sideBarOpen = false;
 };
 
 export {
@@ -137,4 +163,5 @@ export {
   openSideBar,
   closeSideBar,
   updateProjectOptions,
+  toggleSideBar,
 };

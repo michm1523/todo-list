@@ -7,6 +7,7 @@ import {
   openSideBar,
   closeSideBar,
   updateProjectOptions,
+  toggleSideBar,
 } from "./display.js";
 
 // Create Todo List
@@ -15,12 +16,16 @@ const todoList = new TodoList();
 // Form open and close
 const addTodoBtn = document.querySelector(".add-todo");
 const formCancelBtn = document.querySelector(".form-cancel");
+let currTodoId = null;
 
 addTodoBtn.addEventListener("click", () => openSideBar(todoList.getProjects()));
 
-formCancelBtn.addEventListener("click", closeSideBar);
+formCancelBtn.addEventListener("click", () => {
+  closeSideBar();
+  currTodoId = null;
+});
 
-// Form submission
+// Add/edit todo form submission
 const addTodoForm = document.querySelector(".add-form");
 const todoNameInput = document.querySelector("#todo-name");
 const todoTextInput = document.querySelector("#todo-text");
@@ -31,18 +36,29 @@ const importantInput = document.querySelector("#important-check");
 addTodoForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  todoList.addTodo(
-    new Todo(
-      todoNameInput.value,
-      todoTextInput.value,
-      todoDeadlineInput.value,
-      projectSelectInput.value,
-      importantInput.checked,
-    ),
-  );
+  if (!currTodoId) {
+    todoList.addTodo(
+      new Todo(
+        todoNameInput.value,
+        todoTextInput.value,
+        todoDeadlineInput.value,
+        projectSelectInput.value,
+        importantInput.checked,
+      ),
+    );
+  } else {
+    const formData = {
+      name: todoNameInput.value,
+      text: todoTextInput.value,
+      deadline: todoDeadlineInput.value,
+      important: importantInput.checked,
+    };
+    todoList.editTodo(currTodoId, formData);
+  }
 
   renderTodos(todoList.getDisplayTodos());
 
+  currTodoId = null;
   closeSideBar();
 });
 
@@ -84,6 +100,18 @@ todoListElement.addEventListener("click", (e) => {
 
   if (e.target.classList.contains("todo-check")) {
     todoList.toggleTodoComplete(e.target.parentElement.getAttribute("data-id"));
+  }
+
+  if (e.target.classList.contains("todo-name")) {
+    toggleSideBar(
+      todoList.getProjects(),
+      todoList.getTodoById(e.target.parentElement.getAttribute("data-id")),
+    );
+    if (currTodoId) {
+      currTodoId = null;
+    } else {
+      currTodoId = e.target.parentElement.getAttribute("data-id");
+    }
   }
 });
 

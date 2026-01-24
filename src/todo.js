@@ -9,4 +9,8 @@ export default class Todo {
     this.id = crypto.randomUUID();
     this.completed = false;
   }
+
+  update = (details) => {
+    Object.assign(this, details);
+  };
 }
