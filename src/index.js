@@ -9,6 +9,7 @@ import {
   updateProjectOptions,
   toggleSideBar,
   getSideBarOpen,
+  updateFilters,
 } from "./display.js";
 
 // Create Todo List
@@ -122,7 +123,24 @@ const projectList = document.querySelector(".project-list");
 const timeTabs = document.querySelector(".tabs");
 
 homeBtn.addEventListener("click", (e) => {
-  todoList.resetFilters();
+  reset();
+  showTodos();
+});
+
+const sort = document.querySelector(".sort");
+const sortButton = document.querySelector(".sort-label");
+const sortOptions = document.querySelector(".sort-options");
+
+sortButton.addEventListener("click", (e) => {
+  sort.classList.toggle("sort-open");
+});
+
+sortOptions.addEventListener("click", (e) => {
+  if (e.target.classList.contains("sort-option")) {
+    todoList.changeSort(e.target.textContent);
+    updateFilters(e.target.textContent);
+    sort.classList.remove("sort-open");
+  }
   showTodos();
 });
 
@@ -135,7 +153,7 @@ let pendingDelete = null;
 
 projectList.addEventListener("click", (e) => {
   if (e.target.classList.contains("project-btn")) {
-    todoList.resetFilters();
+    reset();
     todoList.filterByProject(e.target.textContent);
     showTodos();
   }
@@ -185,6 +203,11 @@ const showTodos = () => {
       closeSideBar();
     }
   }
+};
+
+const reset = () => {
+  todoList.resetFilters();
+  updateFilters("creation date");
 };
 
 showTodos();

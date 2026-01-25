@@ -161,6 +161,12 @@ const getSideBarOpen = () => {
   return sideBarOpen;
 };
 
+const sortButton = document.querySelector(".sort-label");
+
+const updateFilters = (sort, statusFilter) => {
+  sortButton.innerHTML = `Sort by: ${sort} <ion-icon name="chevron-down-outline"></ion-icon>`;
+};
+
 export {
   renderTodos,
   renderProjects,
@@ -169,4 +175,5 @@ export {
   updateProjectOptions,
   toggleSideBar,
   getSideBarOpen,
+  updateFilters,
 };

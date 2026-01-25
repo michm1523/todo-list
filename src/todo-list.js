@@ -1,4 +1,4 @@
-import { differenceInDays } from "date-fns";
+import { differenceInDays, compareAsc } from "date-fns";
 
 class TodoList {
   constructor() {
@@ -6,6 +6,7 @@ class TodoList {
     this.projects = ["Default"];
     this.projectFilter = null;
     this.timeFilter = "all time";
+    this.sort = "creation date";
   }
 
   addTodo = (todo) => {
@@ -34,7 +35,7 @@ class TodoList {
   };
 
   getDisplayTodos = () => {
-    let displayTodos = this.todos;
+    let displayTodos = [...this.todos];
     if (this.projectFilter != null) {
       displayTodos = displayTodos.filter(
         (todo) => todo.project == this.projectFilter,
@@ -55,6 +56,12 @@ class TodoList {
       });
     }
 
+    if (this.sort == "deadline") {
+      displayTodos.sort((todo1, todo2) => {
+        return compareAsc(new Date(todo1.deadline), new Date(todo2.deadline));
+      });
+    }
+
     return displayTodos;
   };
 
@@ -71,6 +78,7 @@ class TodoList {
   resetFilters = () => {
     this.projectFilter = null;
     this.timeFilter = "all time";
+    this.sort = "creation date";
   };
 
   filterByProject = (project) => {
@@ -79,6 +87,10 @@ class TodoList {
 
   filterByTime = (time) => {
     this.timeFilter = time.toLowerCase();
+  };
+
+  changeSort = (sort) => {
+    this.sort = sort;
   };
 
   addProject = (name) => {
