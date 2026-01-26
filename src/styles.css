@@ -107,23 +107,40 @@ ion-icon {
   height: 56px;
 }
 
-.sort {
+.sort-filter {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.sort,
+.filter {
   position: relative;
+}
+
+.sort {
   width: 200px;
 }
 
-.sort-label {
+.filter {
+  width: 120px;
+}
+
+.sort-label,
+.filter-label {
   color: white;
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
-.sort-label:hover {
+.sort-label:hover,
+.filter-label:hover {
   color: rgb(136, 151, 228);
 }
 
-.sort-options {
+.sort-options,
+.filter-options {
   position: absolute;
   bottom: -8px;
   right: 16px;
@@ -138,11 +155,25 @@ ion-icon {
   gap: 8px;
 }
 
-.sort-open .sort-options {
+.filter-options {
+  width: 120px;
+}
+
+.sort-open .sort-options,
+.filter-open .filter-options {
   display: flex;
 }
 
-.sort-option:hover {
+.filter-option {
+  display: flex;
+}
+
+.filter-option label {
+  flex-grow: 1;
+}
+
+.sort-option:hover,
+.filter-option:hover {
   color: rgb(24, 54, 203);
   cursor: pointer;
 }

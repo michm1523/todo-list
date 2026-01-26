@@ -2,11 +2,11 @@ const display = (function () {
   const todoList = document.querySelector(".todos");
   const projectList = document.querySelector(".project-list");
 
-  const render = (todos, projects, sortFilter) => {
+  const render = (todos, projects, sort, filters) => {
     renderTodos(todos);
     renderProjects(projects);
     updateProjectOptions(projects);
-    updateFilters(sortFilter);
+    updateFilters(sort, filters);
   };
 
   const renderTodos = (todos) => {
@@ -170,9 +170,15 @@ const display = (function () {
   };
 
   const sortButton = document.querySelector(".sort-label");
+  const filterImportantEl = document.querySelector("#filter-important");
+  const filterCompleteEl = document.querySelector("#filter-complete");
+  const filterIncompleteEl = document.querySelector("#filter-incomplete");
 
-  const updateFilters = (sort, statusFilter) => {
+  const updateFilters = (sort, filters) => {
     sortButton.innerHTML = `Sort by: ${sort} <ion-icon name="chevron-down-outline"></ion-icon>`;
+    filterImportantEl.checked = filters.filterImportant;
+    filterCompleteEl.checked = filters.filterComplete;
+    filterIncompleteEl.checked = filters.filterIncomplete;
   };
 
   return { openSideBar, closeSideBar, getSideBarOpen, render };

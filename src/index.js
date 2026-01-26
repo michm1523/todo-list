@@ -52,11 +52,7 @@ addTodoForm.addEventListener("submit", (e) => {
   }
 
   updateFormDisplay();
-  display.render(
-    todoList.getDisplayTodos(),
-    todoList.getProjects(),
-    todoList.getSort(),
-  );
+  updateRender();
 
   currTodoId = null;
   display.closeSideBar();
@@ -88,11 +84,7 @@ addProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
   todoList.addProject(projectInput.value);
 
-  display.render(
-    todoList.getDisplayTodos(),
-    todoList.getProjects(),
-    todoList.getSort(),
-  );
+  updateRender();
 
   addProjectDialog.close();
 });
@@ -104,11 +96,7 @@ todoListElement.addEventListener("click", (e) => {
   if (e.target.classList.contains("del-todo")) {
     todoList.delTodo(e.target.parentElement.getAttribute("data-id"));
     updateFormDisplay();
-    display.render(
-      todoList.getDisplayTodos(),
-      todoList.getProjects(),
-      todoList.getSort(),
-    );
+    updateRender();
   }
 
   if (e.target.classList.contains("todo-check")) {
@@ -142,11 +130,7 @@ const timeTabs = document.querySelector(".tabs");
 
 homeBtn.addEventListener("click", (e) => {
   reset();
-  display.render(
-    todoList.getDisplayTodos(),
-    todoList.getProjects(),
-    todoList.getSort(),
-  );
+  updateRender();
   updateFormDisplay();
 });
 
@@ -164,11 +148,33 @@ sortOptions.addEventListener("click", (e) => {
     sort.classList.remove("sort-open");
   }
   updateFormDisplay();
-  display.render(
-    todoList.getDisplayTodos(),
-    todoList.getProjects(),
-    todoList.getSort(),
-  );
+  updateRender();
+});
+
+const statusFilter = document.querySelector(".filter");
+const statusButton = document.querySelector(".filter-label");
+const statusOptions = document.querySelector(".filter-options");
+const filterImportant = document.querySelector("#filter-important");
+const filterComplete = document.querySelector("#filter-complete");
+const filterIncomplete = document.querySelector("#filter-incomplete");
+
+statusButton.addEventListener("click", (e) => {
+  statusFilter.classList.toggle("filter-open");
+});
+
+statusOptions.addEventListener("click", (e) => {
+  if (
+    e.target.classList.contains("filter-desc") ||
+    e.target.classList.contains("filter-check")
+  ) {
+    todoList.filterByStatus(
+      filterImportant.checked,
+      filterComplete.checked,
+      filterIncomplete.checked,
+    );
+
+    updateRender();
+  }
 });
 
 // Project filter and delete project
@@ -183,11 +189,7 @@ projectList.addEventListener("click", (e) => {
     reset();
     todoList.filterByProject(e.target.textContent);
     updateFormDisplay();
-    display.render(
-      todoList.getDisplayTodos(),
-      todoList.getProjects(),
-      todoList.getSort(),
-    );
+    updateRender();
   }
 
   if (e.target.classList.contains("delete-project-btn")) {
@@ -201,17 +203,8 @@ deleteProjectForm.addEventListener("submit", (e) => {
   if (pendingDelete) {
     todoList.delProject(pendingDelete);
   }
-  display.render(
-    todoList.getDisplayTodos(),
-    todoList.getProjects(),
-    todoList.getSort(),
-  );
   updateFormDisplay();
-  display.render(
-    todoList.getDisplayTodos(),
-    todoList.getProjects(),
-    todoList.getSort(),
-  );
+  updateRender();
   deleteProjectDialog.close();
 });
 
@@ -227,11 +220,7 @@ timeTabs.addEventListener("click", (e) => {
   if (e.target.classList.contains("tab")) {
     todoList.filterByTime(e.target.textContent);
     updateFormDisplay();
-    display.render(
-      todoList.getDisplayTodos(),
-      todoList.getProjects(),
-      todoList.getSort(),
-    );
+    updateRender();
   }
 });
 
@@ -250,15 +239,16 @@ const updateFormDisplay = () => {
 
 const reset = () => {
   todoList.resetFilters();
+  updateRender();
+};
+
+const updateRender = () => {
   display.render(
     todoList.getDisplayTodos(),
     todoList.getProjects(),
     todoList.getSort(),
+    todoList.getFilters(),
   );
 };
 
-display.render(
-  todoList.getDisplayTodos(),
-  todoList.getProjects(),
-  todoList.getSort(),
-);
+updateRender();

@@ -36,15 +36,56 @@
             <div class="tab">Today</div>
             <div class="tab">Next 7 Days</div>
           </div>
-          <div class="sort">
-            <button class="sort-label" type="button">
-              Sort by: creation date
-              <ion-icon name="chevron-down-outline"></ion-icon>
-            </button>
-            <ul class="sort-options">
-              <li class="sort-option">creation date</li>
-              <li class="sort-option">deadline</li>
-            </ul>
+          <div class="sort-filter">
+            <div class="sort">
+              <button class="sort-label" type="button">
+                Sort by: creation date
+                <ion-icon name="chevron-down-outline"></ion-icon>
+              </button>
+              <ul class="sort-options">
+                <li class="sort-option">creation date</li>
+                <li class="sort-option">deadline</li>
+              </ul>
+            </div>
+
+            <div class="filter">
+              <button class="filter-label" type="button">
+                Filter
+                <ion-icon name="filter-outline"></ion-icon>
+              </button>
+              <ul class="filter-options">
+                <li class="filter-option">
+                  <label for="filter-important" class="filter-desc"
+                    >Important</label
+                  >
+                  <input
+                    type="checkbox"
+                    id="filter-important"
+                    class="filter-check"
+                  />
+                </li>
+                <li class="filter-option">
+                  <label for="filter-complete" class="filter-desc"
+                    >Completed</label
+                  >
+                  <input
+                    type="checkbox"
+                    id="filter-complete"
+                    class="filter-check"
+                  />
+                </li>
+                <li class="filter-option">
+                  <label for="filter-incomplete" class="filter-desc"
+                    >Incomplete</label
+                  >
+                  <input
+                    type="checkbox"
+                    id="filter-incomplete"
+                    class="filter-check"
+                  />
+                </li>
+              </ul>
+            </div>
           </div>
 
           <button class="add-todo">

@@ -6,6 +6,9 @@ class TodoList {
     this.projects = ["Default"];
     this.projectFilter = null;
     this.timeFilter = "all time";
+    this.filterImportant = false;
+    this.filterComplete = true;
+    this.filterIncomplete = true;
     this.sort = "creation date";
   }
 
@@ -66,6 +69,17 @@ class TodoList {
       });
     }
 
+    if (this.filterImportant) {
+      displayTodos = displayTodos.filter((todo) => todo.important);
+    }
+
+    displayTodos = displayTodos.filter((todo) => {
+      return (
+        (this.filterComplete && todo.completed) ||
+        (this.filterIncomplete && !todo.completed)
+      );
+    });
+
     return displayTodos;
   };
 
@@ -83,6 +97,9 @@ class TodoList {
     this.projectFilter = null;
     this.timeFilter = "all time";
     this.sort = "creation date";
+    this.filterImportant = false;
+    this.filterComplete = true;
+    this.filterIncomplete = true;
   };
 
   filterByProject = (project) => {
@@ -93,12 +110,28 @@ class TodoList {
     this.timeFilter = time.toLowerCase();
   };
 
+  filterByStatus = (important, complete, incomplete) => {
+    this.filterImportant = important;
+    this.filterComplete = complete;
+    this.filterIncomplete = incomplete;
+  };
+
   changeSort = (sort) => {
     this.sort = sort;
   };
 
   getSort = () => {
     return this.sort;
+  };
+
+  getFilters = () => {
+    return {
+      timeFilter: this.timeFilter,
+      projectFilter: this.projectFilter,
+      filterImportant: this.filterImportant,
+      filterComplete: this.filterComplete,
+      filterIncomplete: this.filterIncomplete,
+    };
   };
 
   addProject = (name) => {
