@@ -1,16 +1,7 @@
 import "./styles.css";
 import Todo from "./todo.js";
-import { TodoList } from "./todo-list.js";
-import {
-  renderTodos,
-  renderProjects,
-  openSideBar,
-  closeSideBar,
-  updateProjectOptions,
-  toggleSideBar,
-  getSideBarOpen,
-  updateFilters,
-} from "./display.js";
+import TodoList from "./todo-list.js";
+import display from "./display.js";
 
 // Create Todo List
 const todoList = new TodoList();
@@ -20,10 +11,12 @@ const addTodoBtn = document.querySelector(".add-todo");
 const formCancelBtn = document.querySelector(".form-cancel");
 let currTodoId = null;
 
-addTodoBtn.addEventListener("click", () => openSideBar(todoList.getProjects()));
+addTodoBtn.addEventListener("click", () =>
+  display.openSideBar(todoList.getProjects()),
+);
 
 formCancelBtn.addEventListener("click", () => {
-  closeSideBar();
+  display.closeSideBar();
   currTodoId = null;
 });
 
@@ -58,11 +51,21 @@ addTodoForm.addEventListener("submit", (e) => {
     todoList.editTodo(currTodoId, formData);
   }
 
-  showTodos();
+  updateFormDisplay();
+  display.render(
+    todoList.getDisplayTodos(),
+    todoList.getProjects(),
+    todoList.getSort(),
+  );
 
   currTodoId = null;
-  closeSideBar();
+  display.closeSideBar();
 });
+
+const submitTodoForm = () => {
+  const submitEvent = new Event("submit", { cancelable: true, bubbles: true });
+  addTodoForm.dispatchEvent(submitEvent);
+};
 
 // Add project form
 const addProjectBtn = document.querySelector(".add-project");
@@ -85,8 +88,11 @@ addProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
   todoList.addProject(projectInput.value);
 
-  renderProjects(todoList.getProjects());
-  updateProjectOptions(todoList.getProjects());
+  display.render(
+    todoList.getDisplayTodos(),
+    todoList.getProjects(),
+    todoList.getSort(),
+  );
 
   addProjectDialog.close();
 });
@@ -97,7 +103,12 @@ const todoListElement = document.querySelector(".todos");
 todoListElement.addEventListener("click", (e) => {
   if (e.target.classList.contains("del-todo")) {
     todoList.delTodo(e.target.parentElement.getAttribute("data-id"));
-    showTodos();
+    updateFormDisplay();
+    display.render(
+      todoList.getDisplayTodos(),
+      todoList.getProjects(),
+      todoList.getSort(),
+    );
   }
 
   if (e.target.classList.contains("todo-check")) {
@@ -106,13 +117,20 @@ todoListElement.addEventListener("click", (e) => {
 
   if (e.target.classList.contains("todo-name")) {
     const todoId = e.target.parentElement.getAttribute("data-id");
-    if (getSideBarOpen() && currTodoId == todoId) {
-      currTodoId = null;
-      closeSideBar();
+    if (currTodoId) {
+      if (currTodoId == todoId) {
+        submitTodoForm();
+      } else {
+        submitTodoForm();
+        currTodoId = todoId;
+        display.openSideBar(
+          todoList.getProjects(),
+          todoList.getTodoById(todoId),
+        );
+      }
     } else {
       currTodoId = todoId;
-      closeSideBar();
-      openSideBar(todoList.getProjects(), todoList.getTodoById(todoId));
+      display.openSideBar(todoList.getProjects(), todoList.getTodoById(todoId));
     }
   }
 });
@@ -124,7 +142,12 @@ const timeTabs = document.querySelector(".tabs");
 
 homeBtn.addEventListener("click", (e) => {
   reset();
-  showTodos();
+  display.render(
+    todoList.getDisplayTodos(),
+    todoList.getProjects(),
+    todoList.getSort(),
+  );
+  updateFormDisplay();
 });
 
 const sort = document.querySelector(".sort");
@@ -138,10 +161,14 @@ sortButton.addEventListener("click", (e) => {
 sortOptions.addEventListener("click", (e) => {
   if (e.target.classList.contains("sort-option")) {
     todoList.changeSort(e.target.textContent);
-    updateFilters(e.target.textContent);
     sort.classList.remove("sort-open");
   }
-  showTodos();
+  updateFormDisplay();
+  display.render(
+    todoList.getDisplayTodos(),
+    todoList.getProjects(),
+    todoList.getSort(),
+  );
 });
 
 // Project filter and delete project
@@ -155,7 +182,12 @@ projectList.addEventListener("click", (e) => {
   if (e.target.classList.contains("project-btn")) {
     reset();
     todoList.filterByProject(e.target.textContent);
-    showTodos();
+    updateFormDisplay();
+    display.render(
+      todoList.getDisplayTodos(),
+      todoList.getProjects(),
+      todoList.getSort(),
+    );
   }
 
   if (e.target.classList.contains("delete-project-btn")) {
@@ -169,8 +201,17 @@ deleteProjectForm.addEventListener("submit", (e) => {
   if (pendingDelete) {
     todoList.delProject(pendingDelete);
   }
-  renderProjects(todoList.getProjects());
-  showTodos();
+  display.render(
+    todoList.getDisplayTodos(),
+    todoList.getProjects(),
+    todoList.getSort(),
+  );
+  updateFormDisplay();
+  display.render(
+    todoList.getDisplayTodos(),
+    todoList.getProjects(),
+    todoList.getSort(),
+  );
   deleteProjectDialog.close();
 });
 
@@ -185,30 +226,39 @@ deleteProjectDialog.addEventListener("close", (e) => {
 timeTabs.addEventListener("click", (e) => {
   if (e.target.classList.contains("tab")) {
     todoList.filterByTime(e.target.textContent);
-    showTodos();
+    updateFormDisplay();
+    display.render(
+      todoList.getDisplayTodos(),
+      todoList.getProjects(),
+      todoList.getSort(),
+    );
   }
 });
 
-// Show todos
-const showTodos = () => {
-  renderTodos(todoList.getDisplayTodos());
-  if (currTodoId) {
-    if (
-      !todoList
-        .getDisplayTodos()
-        .map((todo) => todo.id)
-        .includes(currTodoId)
-    ) {
-      currTodoId = null;
-      closeSideBar();
-    }
+// Close form if todo being edited is no longer being displayed
+const updateFormDisplay = () => {
+  if (
+    currTodoId &&
+    !todoList
+      .getDisplayTodos()
+      .map((todo) => todo.id)
+      .includes(currTodoId)
+  ) {
+    submitTodoForm();
   }
 };
 
 const reset = () => {
   todoList.resetFilters();
-  updateFilters("creation date");
+  display.render(
+    todoList.getDisplayTodos(),
+    todoList.getProjects(),
+    todoList.getSort(),
+  );
 };
 
-showTodos();
-renderProjects(todoList.getProjects());
+display.render(
+  todoList.getDisplayTodos(),
+  todoList.getProjects(),
+  todoList.getSort(),
+);

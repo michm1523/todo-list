@@ -52,7 +52,11 @@ class TodoList {
     } else if (this.timeFilter == "next 7 days") {
       displayTodos = displayTodos.filter((todo) => {
         const todoDeadlineDate = new Date(todo.deadline);
-        return differenceInDays(todoDeadlineDate, today) <= 7 && todo.deadline;
+        return (
+          differenceInDays(todoDeadlineDate, today) <= 7 &&
+          differenceInDays(todoDeadlineDate, today) >= 0 &&
+          todo.deadline
+        );
       });
     }
 
@@ -93,6 +97,10 @@ class TodoList {
     this.sort = sort;
   };
 
+  getSort = () => {
+    return this.sort;
+  };
+
   addProject = (name) => {
     this.projects.push(name);
   };
@@ -107,4 +115,4 @@ class TodoList {
   };
 }
 
-export { TodoList };
+export default TodoList;

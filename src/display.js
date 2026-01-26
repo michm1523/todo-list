@@ -1,179 +1,181 @@
-const todoList = document.querySelector(".todos");
-const projectList = document.querySelector(".project-list");
+const display = (function () {
+  const todoList = document.querySelector(".todos");
+  const projectList = document.querySelector(".project-list");
 
-const renderTodos = (todos) => {
-  // Clear list
-  while (todoList.firstChild) {
-    todoList.removeChild(todoList.firstChild);
-  }
+  const render = (todos, projects, sortFilter) => {
+    renderTodos(todos);
+    renderProjects(projects);
+    updateProjectOptions(projects);
+    updateFilters(sortFilter);
+  };
 
-  // Render new list
-  todos.forEach((todo) => {
-    let todoElement = document.createElement("li");
-    todoElement.classList.add("todo");
-    todoElement.setAttribute("data-id", todo.id);
-
-    let check = document.createElement("input");
-    check.setAttribute("type", "checkbox");
-    check.classList.add("todo-check");
-    if (todo.completed) {
-      check.checked = true;
-    }
-    todoElement.appendChild(check);
-
-    let todoName = document.createElement("p");
-    todoName.classList.add("todo-name");
-    todoName.textContent = todo.name;
-    todoElement.appendChild(todoName);
-
-    let todoDeadline = document.createElement("p");
-    todoDeadline.textContent = todo.deadline;
-    todoElement.appendChild(todoDeadline);
-
-    let todoProject = document.createElement("p");
-    if (todo.project != "Default") {
-      todoProject.textContent = todo.project;
-    }
-    todoElement.appendChild(todoProject);
-
-    if (todo.important) {
-      let importantTag = document.createElement("p");
-      importantTag.textContent = "Important";
-      importantTag.classList.add("important-tag");
-      todoElement.appendChild(importantTag);
+  const renderTodos = (todos) => {
+    // Clear list
+    while (todoList.firstChild) {
+      todoList.removeChild(todoList.firstChild);
     }
 
-    let deleteBtn = document.createElement("button");
-    deleteBtn.setAttribute("type", "button");
-    deleteBtn.classList.add("del-todo");
-    let deleteIcon = document.createElement("ion-icon");
-    deleteIcon.setAttribute("name", "trash-outline");
-    deleteBtn.appendChild(deleteIcon);
-    todoElement.appendChild(deleteBtn);
+    // Render new list
+    todos.forEach((todo) => {
+      let todoElement = document.createElement("li");
+      todoElement.classList.add("todo");
+      todoElement.setAttribute("data-id", todo.id);
 
-    todoList.appendChild(todoElement);
-  });
-};
+      let check = document.createElement("input");
+      check.setAttribute("type", "checkbox");
+      check.classList.add("todo-check");
+      if (todo.completed) {
+        check.checked = true;
+      }
+      todoElement.appendChild(check);
 
-const renderProjects = (projects) => {
-  while (projectList.firstChild) {
-    projectList.removeChild(projectList.firstChild);
-  }
+      let todoName = document.createElement("p");
+      todoName.classList.add("todo-name");
+      todoName.textContent = todo.name;
+      todoElement.appendChild(todoName);
 
-  projects.forEach((project) => {
-    const projectElement = document.createElement("li");
-    projectElement.classList.add("project");
+      let todoDeadline = document.createElement("p");
+      todoDeadline.textContent = todo.deadline;
+      todoElement.appendChild(todoDeadline);
 
-    const projectBtn = document.createElement("button");
-    projectBtn.setAttribute("type", "button");
-    projectBtn.classList.add("project-btn");
-    projectBtn.textContent = project;
-    projectElement.appendChild(projectBtn);
+      let todoProject = document.createElement("p");
+      if (todo.project != "Default") {
+        todoProject.textContent = todo.project;
+      }
+      todoElement.appendChild(todoProject);
 
-    if (project != "Default") {
-      const deleteBtn = document.createElement("button");
+      if (todo.important) {
+        let importantTag = document.createElement("p");
+        importantTag.textContent = "Important";
+        importantTag.classList.add("important-tag");
+        todoElement.appendChild(importantTag);
+      }
+
+      let deleteBtn = document.createElement("button");
       deleteBtn.setAttribute("type", "button");
-      deleteBtn.classList.add("delete-project-btn");
-
-      const deleteIcon = document.createElement("ion-icon");
+      deleteBtn.classList.add("del-todo");
+      let deleteIcon = document.createElement("ion-icon");
       deleteIcon.setAttribute("name", "trash-outline");
       deleteBtn.appendChild(deleteIcon);
+      todoElement.appendChild(deleteBtn);
 
-      projectElement.appendChild(deleteBtn);
+      todoList.appendChild(todoElement);
+    });
+  };
+
+  const renderProjects = (projects) => {
+    while (projectList.firstChild) {
+      projectList.removeChild(projectList.firstChild);
     }
 
-    projectList.appendChild(projectElement);
-  });
-};
+    projects.forEach((project) => {
+      const projectElement = document.createElement("li");
+      projectElement.classList.add("project");
 
-// Add todo form display
-const todoNameInput = document.querySelector("#todo-name");
-const todoTextInput = document.querySelector("#todo-text");
-const todoDeadlineInput = document.querySelector("#deadline");
-const projectSelectInput = document.querySelector("#project-select");
-const importantInput = document.querySelector("#important-check");
-const formTitle = document.querySelector(".form-title");
-const projectLabel = document.querySelector(".project-label");
+      const projectBtn = document.createElement("button");
+      projectBtn.setAttribute("type", "button");
+      projectBtn.classList.add("project-btn");
+      projectBtn.textContent = project;
+      projectElement.appendChild(projectBtn);
 
-const addTodoBtn = document.querySelector(".add-todo");
-const rightSideBar = document.querySelector(".right-sidebar");
+      if (project != "Default") {
+        const deleteBtn = document.createElement("button");
+        deleteBtn.setAttribute("type", "button");
+        deleteBtn.classList.add("delete-project-btn");
 
-let sideBarOpen = false;
+        const deleteIcon = document.createElement("ion-icon");
+        deleteIcon.setAttribute("name", "trash-outline");
+        deleteBtn.appendChild(deleteIcon);
 
-const toggleSideBar = (projects, todo) => {
-  if (sideBarOpen) {
-    closeSideBar();
-  } else {
-    openSideBar(projects, todo);
-  }
-};
+        projectElement.appendChild(deleteBtn);
+      }
 
-const openSideBar = (projects, todo) => {
-  rightSideBar.classList.add("open");
-  addTodoBtn.classList.add("hidden");
-  if (todo) {
-    projectSelectInput.style.display = "none";
-    projectLabel.style.display = "none";
+      projectList.appendChild(projectElement);
+    });
+  };
 
-    todoNameInput.value = todo.name;
-    todoTextInput.value = todo.text;
-    todoDeadlineInput.value = todo.deadline;
-    importantInput.checked = todo.important;
-    formTitle.textContent = "Edit Todo";
-  } else {
-    projectSelectInput.style.display = "block";
-    projectLabel.style.display = "none";
-    formTitle.textContent = "New Todo";
-  }
-  sideBarOpen = true;
-  updateProjectOptions(projects);
-};
+  // Add todo form display
+  const todoNameInput = document.querySelector("#todo-name");
+  const todoTextInput = document.querySelector("#todo-text");
+  const todoDeadlineInput = document.querySelector("#deadline");
+  const projectSelectInput = document.querySelector("#project-select");
+  const importantInput = document.querySelector("#important-check");
+  const formTitle = document.querySelector(".form-title");
+  const projectLabel = document.querySelector(".project-label");
 
-const updateProjectOptions = (projects) => {
-  while (projectSelectInput.firstChild) {
-    projectSelectInput.removeChild(projectSelectInput.firstChild);
-  }
-  projects.forEach((project) => {
-    const projectOption = document.createElement("option");
+  const addTodoBtn = document.querySelector(".add-todo");
+  const rightSideBar = document.querySelector(".right-sidebar");
 
-    if (project === "Default") {
-      projectOption.setAttribute("default", "");
+  let sideBarOpen = false;
+
+  // const toggleSideBar = (projects, todo) => {
+  //   if (sideBarOpen) {
+  //     closeSideBar();
+  //   } else {
+  //     openSideBar(projects, todo);
+  //   }
+  // };
+
+  const openSideBar = (projects, todo) => {
+    rightSideBar.classList.add("open");
+    addTodoBtn.classList.add("hidden");
+    if (todo) {
+      projectSelectInput.style.display = "none";
+      projectLabel.style.display = "none";
+
+      todoNameInput.value = todo.name;
+      todoTextInput.value = todo.text;
+      todoDeadlineInput.value = todo.deadline;
+      importantInput.checked = todo.important;
+      formTitle.textContent = "Edit Todo";
+    } else {
+      projectSelectInput.style.display = "block";
+      projectLabel.style.display = "none";
+      formTitle.textContent = "New Todo";
     }
+    sideBarOpen = true;
+    updateProjectOptions(projects);
+  };
 
-    projectOption.setAttribute("value", project);
-    projectOption.textContent = project;
-    projectSelectInput.appendChild(projectOption);
-  });
-};
+  const updateProjectOptions = (projects) => {
+    while (projectSelectInput.firstChild) {
+      projectSelectInput.removeChild(projectSelectInput.firstChild);
+    }
+    projects.forEach((project) => {
+      const projectOption = document.createElement("option");
 
-const closeSideBar = () => {
-  todoNameInput.value = "";
-  todoTextInput.value = "";
-  projectSelectInput.value = "";
-  todoDeadlineInput.value = "";
-  importantInput.checked = false;
-  rightSideBar.classList.remove("open");
-  addTodoBtn.classList.remove("hidden");
-  sideBarOpen = false;
-};
+      if (project === "Default") {
+        projectOption.setAttribute("default", "");
+      }
 
-const getSideBarOpen = () => {
-  return sideBarOpen;
-};
+      projectOption.setAttribute("value", project);
+      projectOption.textContent = project;
+      projectSelectInput.appendChild(projectOption);
+    });
+  };
 
-const sortButton = document.querySelector(".sort-label");
+  const closeSideBar = () => {
+    todoNameInput.value = "";
+    todoTextInput.value = "";
+    projectSelectInput.value = "";
+    todoDeadlineInput.value = "";
+    importantInput.checked = false;
+    rightSideBar.classList.remove("open");
+    addTodoBtn.classList.remove("hidden");
+    sideBarOpen = false;
+  };
 
-const updateFilters = (sort, statusFilter) => {
-  sortButton.innerHTML = `Sort by: ${sort} <ion-icon name="chevron-down-outline"></ion-icon>`;
-};
+  const getSideBarOpen = () => {
+    return sideBarOpen;
+  };
 
-export {
-  renderTodos,
-  renderProjects,
-  openSideBar,
-  closeSideBar,
-  updateProjectOptions,
-  toggleSideBar,
-  getSideBarOpen,
-  updateFilters,
-};
+  const sortButton = document.querySelector(".sort-label");
+
+  const updateFilters = (sort, statusFilter) => {
+    sortButton.innerHTML = `Sort by: ${sort} <ion-icon name="chevron-down-outline"></ion-icon>`;
+  };
+
+  return { openSideBar, closeSideBar, getSideBarOpen, render };
+})();
+
+export default display;
