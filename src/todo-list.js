@@ -1,4 +1,5 @@
 import { differenceInDays, compareAsc } from "date-fns";
+import Todo from "./todo.js";
 
 class TodoList {
   constructor() {
@@ -14,10 +15,12 @@ class TodoList {
 
   addTodo = (todo) => {
     this.todos.push(todo);
+    this.saveToStorage();
   };
 
   delTodo = (id) => {
     this.todos = this.todos.filter((todo) => todo.id != id);
+    this.saveToStorage();
   };
 
   toggleTodoComplete = (id) => {
@@ -27,6 +30,7 @@ class TodoList {
         return;
       }
     }
+    this.saveToStorage();
   };
 
   editTodo = (id, details) => {
@@ -35,6 +39,7 @@ class TodoList {
         todo.update(details);
       }
     }
+    this.saveToStorage();
   };
 
   getDisplayTodos = () => {
@@ -136,15 +141,45 @@ class TodoList {
 
   addProject = (name) => {
     this.projects.push(name);
+    this.saveToStorage();
   };
 
   delProject = (name) => {
     this.projects = this.projects.filter((project) => project != name);
     this.todos = this.todos.filter((todo) => todo.project != name);
+    this.saveToStorage();
   };
 
   getProjects = () => {
     return this.projects;
+  };
+
+  saveToStorage = () => {
+    localStorage.setItem("todos", JSON.stringify(this.todos));
+    localStorage.setItem("projects", JSON.stringify(this.projects));
+    console.log(JSON.parse(localStorage.getItem("projects")));
+  };
+
+  getFromStorage = () => {
+    for (const todo of JSON.parse(localStorage.getItem("todos"))) {
+      // Can't use add todo function since it will saveToStorage
+      this.todos.push(
+        new Todo(
+          todo.name,
+          todo.text,
+          todo.deadline,
+          todo.project,
+          todo.important,
+          todo.completed,
+        ),
+      );
+    }
+
+    this.projects = JSON.parse(localStorage.getItem("projects"));
+    if (!this.projects) {
+      console.log(this.projects);
+      this.projects = ["Default"];
+    }
   };
 }
 

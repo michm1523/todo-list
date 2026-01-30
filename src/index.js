@@ -50,7 +50,6 @@ addTodoForm.addEventListener("submit", (e) => {
     };
     todoList.editTodo(currTodoId, formData);
   }
-
   updateFormDisplay();
   updateRender();
 
@@ -101,6 +100,8 @@ todoListElement.addEventListener("click", (e) => {
 
   if (e.target.classList.contains("todo-check")) {
     todoList.toggleTodoComplete(e.target.parentElement.getAttribute("data-id"));
+    updateRender();
+    updateFormDisplay();
   }
 
   if (e.target.classList.contains("todo-name")) {
@@ -174,6 +175,7 @@ statusOptions.addEventListener("click", (e) => {
     );
 
     updateRender();
+    updateFormDisplay();
   }
 });
 
@@ -251,4 +253,5 @@ const updateRender = () => {
   );
 };
 
+todoList.getFromStorage();
 updateRender();
