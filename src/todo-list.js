@@ -157,7 +157,6 @@ class TodoList {
   saveToStorage = () => {
     localStorage.setItem("todos", JSON.stringify(this.todos));
     localStorage.setItem("projects", JSON.stringify(this.projects));
-    console.log(JSON.parse(localStorage.getItem("projects")));
   };
 
   getFromStorage = () => {

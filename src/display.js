@@ -2,14 +2,14 @@ const display = (function () {
   const todoList = document.querySelector(".todos");
   const projectList = document.querySelector(".project-list");
 
-  const render = (todos, projects, sort, filters) => {
-    renderTodos(todos);
+  const render = (todos, projects, sort, filters, currTodoId) => {
+    renderTodos(todos, currTodoId);
     renderProjects(projects);
     updateProjectOptions(projects);
     updateFilters(sort, filters);
   };
 
-  const renderTodos = (todos) => {
+  const renderTodos = (todos, currTodoId) => {
     // Clear list
     while (todoList.firstChild) {
       todoList.removeChild(todoList.firstChild);
@@ -58,6 +58,12 @@ const display = (function () {
       deleteIcon.setAttribute("name", "trash-outline");
       deleteBtn.appendChild(deleteIcon);
       todoElement.appendChild(deleteBtn);
+
+      if (todo.id == currTodoId) {
+        todoElement.classList.add("todo-selected");
+      } else {
+        todoElement.classList.remove("todo-selected");
+      }
 
       todoList.appendChild(todoElement);
     });
@@ -174,11 +180,29 @@ const display = (function () {
   const filterCompleteEl = document.querySelector("#filter-complete");
   const filterIncompleteEl = document.querySelector("#filter-incomplete");
 
+  const timeFilters = document.querySelectorAll(".tab");
+
   const updateFilters = (sort, filters) => {
     sortButton.innerHTML = `Sort by: ${sort} <ion-icon name="chevron-down-outline"></ion-icon>`;
     filterImportantEl.checked = filters.filterImportant;
     filterCompleteEl.checked = filters.filterComplete;
     filterIncompleteEl.checked = filters.filterIncomplete;
+
+    timeFilters.forEach((tab) => {
+      if (tab.textContent.toLowerCase() == filters.timeFilter) {
+        tab.classList.add("tab-selected");
+      } else {
+        tab.classList.remove("tab-selected");
+      }
+    });
+
+    for (const project of projectList.children) {
+      if (project.textContent == filters.projectFilter) {
+        project.classList.add("project-selected");
+      } else {
+        project.classList.remove("project-selected");
+      }
+    }
   };
 
   return { openSideBar, closeSideBar, getSideBarOpen, render };

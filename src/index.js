@@ -18,6 +18,7 @@ addTodoBtn.addEventListener("click", () =>
 formCancelBtn.addEventListener("click", () => {
   display.closeSideBar();
   currTodoId = null;
+  updateRender();
 });
 
 // Add/edit todo form submission
@@ -105,6 +106,7 @@ todoListElement.addEventListener("click", (e) => {
   }
 
   if (e.target.classList.contains("todo-name")) {
+    console.log(currTodoId);
     const todoId = e.target.parentElement.getAttribute("data-id");
     if (currTodoId) {
       if (currTodoId == todoId) {
@@ -121,6 +123,8 @@ todoListElement.addEventListener("click", (e) => {
       currTodoId = todoId;
       display.openSideBar(todoList.getProjects(), todoList.getTodoById(todoId));
     }
+    console.log(currTodoId);
+    updateRender();
   }
 });
 
@@ -250,6 +254,7 @@ const updateRender = () => {
     todoList.getProjects(),
     todoList.getSort(),
     todoList.getFilters(),
+    currTodoId,
   );
 };
 

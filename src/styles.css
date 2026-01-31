@@ -50,11 +50,14 @@ ion-icon {
 .label-box {
   display: flex;
   gap: 24px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .projects ul {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .important-btn {
@@ -79,7 +82,18 @@ ion-icon {
   display: flex;
   align-items: center;
   font-size: 18px;
-  gap: 16px;
+  justify-content: space-between;
+  padding-right: 24px;
+  position: relative;
+}
+
+.project-selected::before {
+  content: "\25CF ";
+  position: absolute;
+  left: -5px;
+  display: flex;
+  align-items: center;
+  transform: translateX(-100%);
 }
 
 .delete-project-btn {
@@ -96,8 +110,20 @@ ion-icon {
   padding: 64px 64px;
 }
 
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
 .tab {
   cursor: pointer;
+  padding: 12px 16px;
+  border-radius: 16px;
+}
+
+.tab-selected {
+  background-color: rgb(24, 54, 203);
+  color: white;
 }
 
 .options {
@@ -178,11 +204,6 @@ ion-icon {
   cursor: pointer;
 }
 
-.tabs {
-  display: flex;
-  gap: 24px;
-}
-
 .add-todo {
   background-color: white;
   height: 48px;
@@ -216,6 +237,15 @@ ion-icon {
   display: flex;
   align-items: center;
   gap: 24px;
+}
+
+.todo-selected {
+  background-color: rgb(63, 93, 245);
+  color: white;
+}
+
+.todo-selected ion-icon {
+  color: white;
 }
 
 .todo button {
