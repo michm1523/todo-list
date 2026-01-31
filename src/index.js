@@ -11,9 +11,14 @@ const addTodoBtn = document.querySelector(".add-todo");
 const formCancelBtn = document.querySelector(".form-cancel");
 let currTodoId = null;
 
-addTodoBtn.addEventListener("click", () =>
-  display.openSideBar(todoList.getProjects()),
-);
+addTodoBtn.addEventListener("click", (e) => {
+  display.openSideBar(
+    todoList.getProjects(),
+    currTodoId,
+    todoList.getFilters().projectFilter,
+  );
+  updateRender();
+});
 
 formCancelBtn.addEventListener("click", () => {
   display.closeSideBar();
@@ -117,11 +122,16 @@ todoListElement.addEventListener("click", (e) => {
         display.openSideBar(
           todoList.getProjects(),
           todoList.getTodoById(todoId),
+          todoList.getFilters().projectFilter,
         );
       }
     } else {
       currTodoId = todoId;
-      display.openSideBar(todoList.getProjects(), todoList.getTodoById(todoId));
+      display.openSideBar(
+        todoList.getProjects(),
+        todoList.getTodoById(todoId),
+        todoList.getFilters().projectFilter,
+      );
     }
     console.log(currTodoId);
     updateRender();

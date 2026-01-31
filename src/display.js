@@ -5,7 +5,7 @@ const display = (function () {
   const render = (todos, projects, sort, filters, currTodoId) => {
     renderTodos(todos, currTodoId);
     renderProjects(projects);
-    updateProjectOptions(projects);
+    updateProjectOptions(projects, filters.projectFilter);
     updateFilters(sort, filters);
   };
 
@@ -122,7 +122,7 @@ const display = (function () {
   //   }
   // };
 
-  const openSideBar = (projects, todo) => {
+  const openSideBar = (projects, todo, project) => {
     rightSideBar.classList.add("open");
     addTodoBtn.classList.add("hidden");
     if (todo) {
@@ -140,18 +140,21 @@ const display = (function () {
       formTitle.textContent = "New Todo";
     }
     sideBarOpen = true;
-    updateProjectOptions(projects);
+    updateProjectOptions(projects, project);
   };
 
-  const updateProjectOptions = (projects) => {
+  const updateProjectOptions = (projects, currProject) => {
+    console.log(currProject);
     while (projectSelectInput.firstChild) {
       projectSelectInput.removeChild(projectSelectInput.firstChild);
     }
     projects.forEach((project) => {
       const projectOption = document.createElement("option");
 
-      if (project === "Default") {
-        projectOption.setAttribute("default", "");
+      if (!currProject && project === "Default") {
+        projectOption.setAttribute("selected", "");
+      } else if (project == currProject) {
+        projectOption.setAttribute("selected", "");
       }
 
       projectOption.setAttribute("value", project);
