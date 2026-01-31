@@ -56,10 +56,10 @@ addTodoForm.addEventListener("submit", (e) => {
     };
     todoList.editTodo(currTodoId, formData);
   }
+  currTodoId = null;
   updateFormDisplay();
   updateRender();
 
-  currTodoId = null;
   display.closeSideBar();
 });
 
