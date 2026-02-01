@@ -98,21 +98,23 @@ addProjectForm.addEventListener("submit", (e) => {
 const todoListElement = document.querySelector(".todos");
 
 todoListElement.addEventListener("click", (e) => {
+  console.log(e.target);
   if (e.target.classList.contains("del-todo")) {
     todoList.delTodo(e.target.parentElement.getAttribute("data-id"));
     updateFormDisplay();
     updateRender();
+    e.stopPropagation();
   }
 
   if (e.target.classList.contains("todo-check")) {
     todoList.toggleTodoComplete(e.target.parentElement.getAttribute("data-id"));
     updateRender();
     updateFormDisplay();
+    e.stopPropagation();
   }
 
-  if (e.target.classList.contains("todo-name")) {
-    console.log(currTodoId);
-    const todoId = e.target.parentElement.getAttribute("data-id");
+  if (e.target.classList.contains("todo")) {
+    const todoId = e.target.getAttribute("data-id");
     if (currTodoId) {
       if (currTodoId == todoId) {
         submitTodoForm();

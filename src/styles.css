@@ -58,15 +58,13 @@ ion-icon {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: 480px;
+  overflow-y: auto;
 }
 
 .important-btn {
   font-size: 24px;
   font-weight: 500;
-}
-
-.projects {
-  height: 400px;
 }
 
 .add-project {
@@ -226,6 +224,22 @@ ion-icon {
   flex-direction: column;
   gap: 12px;
   margin-top: 64px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(95, 95, 95);
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(197, 197, 197);
+  border-radius: 100px;
 }
 
 .todo {
@@ -237,6 +251,7 @@ ion-icon {
   display: flex;
   align-items: center;
   gap: 24px;
+  cursor: pointer;
 }
 
 .todo-selected {
@@ -257,8 +272,7 @@ ion-icon {
   font-size: 24px;
 }
 
-.todo input,
-.todo-name {
+.todo input {
   cursor: pointer;
 }
 
@@ -269,8 +283,25 @@ ion-icon {
   border-radius: 4px;
 }
 
+.todo-name,
+.important-tag {
+  pointer-events: none;
+}
+
+.todo-selected .important-tag {
+  background-color: rgb(24, 54, 203);
+  color: white;
+}
+
 .todo-name {
   flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.todo p {
+  white-space: nowrap;
 }
 
 .right-sidebar {
