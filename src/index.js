@@ -135,7 +135,6 @@ todoListElement.addEventListener("click", (e) => {
         todoList.getFilters().projectFilter,
       );
     }
-    console.log(currTodoId);
     updateRender();
   }
 });

@@ -85,13 +85,25 @@ ion-icon {
   position: relative;
 }
 
+.project-selected {
+  margin-left: 16px;
+}
+
 .project-selected::before {
-  content: "\25CF ";
+  content: "\25CF";
   position: absolute;
   left: -5px;
   display: flex;
   align-items: center;
   transform: translateX(-100%);
+  visibility: visible;
+}
+
+.project-btn {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
 }
 
 .delete-project-btn {

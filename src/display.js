@@ -144,7 +144,6 @@ const display = (function () {
   };
 
   const updateProjectOptions = (projects, currProject) => {
-    console.log(currProject);
     while (projectSelectInput.firstChild) {
       projectSelectInput.removeChild(projectSelectInput.firstChild);
     }
